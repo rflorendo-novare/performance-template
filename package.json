@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "k6:local:stg:product-service": "k6 run environments/stg/dummyJson/tests/products-service/load.ts",
+    "k6:local:stg:login-service": "k6 run environments/stg/dummyJson/tests/login-service/load.ts",
     "k6:cloud:stg:product-service": "k6 run environments/stg/dummyJson/tests/products-service/load.ts",
+    "k6:local:stg:all": "npx tsx scripts/run-all.ts",
+    "k6:cloud:stg:all": "npx tsx scripts/run-all.ts --cloud",
     "terraform:init": "terraform -chdir=terraform init",
     "terraform:fmt": "terraform -chdir=terraform fmt",
     "terraform:validate": "terraform -chdir=terraform validate",
@@ -20,6 +23,7 @@
     "@types/k6": "^2.0.0",
     "dprint": "^0.55.1",
     "lefthook": "^2.1.10",
+    "tsx": "^4.23.1",
     "typescript": "^7.0.2"
   }
 }
