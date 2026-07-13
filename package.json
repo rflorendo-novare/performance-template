@@ -1,0 +1,20 @@
+{
+  "name": "performance-template",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "k6:local:stg:product-service": "k6 run environments/stg/dummyJson/tests/products-service/load.ts",
+    "k6:cloud:stg:product-service": "k6 run environments/stg/dummyJson/tests/products-service/load.ts",
+    "terraform:init": "terraform -chdir=terraform init",
+    "terraform:fmt": "terraform -chdir=terraform fmt",
+    "terraform:validate": "terraform -chdir=terraform validate",
+    "terraform:plan": "terraform -chdir=terraform plan",
+    "terraform:apply": "terraform -chdir=terraform apply",
+    "terraform:destroy": "terraform -chdir=terraform destroy"
+  },
+  "homepage": "https://github.com/rflorendo-novare/performance-template#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/k6": "^2.0.0"
+  }
+}
