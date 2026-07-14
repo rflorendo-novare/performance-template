@@ -1,21 +1,20 @@
-import { readdirSync, statSync } from "fs";
+import { readdirSync } from "fs";
 import { join, resolve } from "path";
 import { spawnSync } from "child_process";
 
-const root = resolve("environments");
+const environment = process.argv.slice(2).find((a) => !a.startsWith("--")) || "";
+const root = environment ? resolve(`environments/${environment}`) : resolve("environments");
 const tests: string[] = [];
 
-function findTestFiles(dir: string): void {
+function findTestFiles(dir: string, collectTests = false): void {
   const entries = readdirSync(dir, { withFileTypes: true });
   for (const entry of entries) {
     if (entry.name === "node_modules") continue;
     const full = join(dir, entry.name);
-    if (!entry.isDirectory()) continue;
-    const maybeLoad = join(full, "load.ts");
-    if (statSync(maybeLoad, { throwIfNoEntry: false })) {
-      tests.push(maybeLoad);
-    } else {
-      findTestFiles(full);
+    if (collectTests && entry.isFile() && entry.name.endsWith(".ts")) {
+      tests.push(full);
+    } else if (entry.isDirectory()) {
+      findTestFiles(full, collectTests || entry.name === "tests");
     }
   }
 }
@@ -23,7 +22,8 @@ function findTestFiles(dir: string): void {
 findTestFiles(root);
 
 if (tests.length === 0) {
-  console.log("No load test files found under environments/.");
+  const scope = environment ? `environments/${environment}/` : "environments/";
+  console.log(`No test files found under ${scope}`);
   process.exit(0);
 }
 
